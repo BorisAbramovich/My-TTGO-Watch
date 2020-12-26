@@ -79,8 +79,8 @@ static void pwr_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void source_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void volup_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event );
 static void voldn_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event );
-static void rExit_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event );
-
+// static void rExit_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event );
+static void toggle_light_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event );
 
 void IRController_main_setup( uint32_t tile_num ) {
 
@@ -158,15 +158,23 @@ void IRController_main_setup( uint32_t tile_num ) {
     lv_label_set_text( IRController_main_voldn_label, "Vol -");
 
     //Bottom Right, Exit menu button (This is exit for the TV, not the app)
-    lv_obj_t *IRController_main_rExit_btn = NULL;
+    /* lv_obj_t *IRController_main_rExit_btn = NULL;
     IRController_main_rExit_btn = lv_btn_create( IRController_main_tile, NULL);  
     lv_obj_set_event_cb( IRController_main_rExit_btn, rExit_IRController_main_event_cb );
     lv_obj_set_size( IRController_main_rExit_btn, 70, 40);
     lv_obj_add_style( IRController_main_rExit_btn, LV_BTN_PART_MAIN, mainbar_get_button_style() );
     lv_obj_align(IRController_main_rExit_btn, NULL, LV_ALIGN_CENTER, 10, 30 );
     lv_obj_t *IRController_main_rExit_label = lv_label_create( IRController_main_rExit_btn, NULL);
-    lv_label_set_text( IRController_main_rExit_label, "Exit");    
+    lv_label_set_text( IRController_main_rExit_label, "Exit"); */   
 
+    lv_obj_t *IRController_main_toggle_light_btn = NULL;
+    IRController_main_toggle_light_btn = lv_btn_create( IRController_main_tile, NULL);  
+    lv_obj_set_event_cb( IRController_main_toggle_light_btn, toggle_light_IRController_main_event_cb );
+    lv_obj_set_size( IRController_main_toggle_light_btn, 70, 40);
+    lv_obj_add_style( IRController_main_toggle_light_btn, LV_BTN_PART_MAIN, mainbar_get_button_style() );
+    lv_obj_align(IRController_main_toggle_light_btn, NULL, LV_ALIGN_CENTER, 10, 30 );
+    lv_obj_t *IRController_main_rExit_label = lv_label_create( IRController_main_toggle_light_btn, NULL);
+    lv_label_set_text( IRController_main_rExit_label, "Light"); 
 
     lv_style_set_text_opa( &IRController_main_style, LV_OBJ_PART_MAIN, LV_OPA_70);
     lv_style_set_text_font( &IRController_main_style, LV_STATE_DEFAULT, &Ubuntu_32px);
@@ -253,12 +261,24 @@ static void voldn_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event )
                                         break;
     }
 }
-static void rExit_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event ) {
+// static void rExit_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event ) {
+//     switch( event ) {
+//         case( LV_EVENT_CLICKED ):       
+//                                         pinMode(13, OUTPUT);
+//                                         digitalWrite(13, LOW); //No Current Limiting so keep it off            
+//                                         // irsend.sendRaw(S_exit, 68, 38);
+//                                         irsend.sendRaw(toggleLight_new, 239, 38);
+//                                         delay(50);
+//                                         digitalWrite(13, LOW); //No Current Limiting so keep it off
+//                                         break;
+//     }
+static void toggle_light_IRController_main_event_cb( lv_obj_t * obj, lv_event_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):       
                                         pinMode(13, OUTPUT);
                                         digitalWrite(13, LOW); //No Current Limiting so keep it off            
-                                        irsend.sendRaw(S_exit, 68, 38);
+                                        // irsend.sendRaw(S_exit, 68, 38);
+                                        irsend.sendRaw(toggleLight_new, 239, 38);
                                         delay(50);
                                         digitalWrite(13, LOW); //No Current Limiting so keep it off
                                         break;
